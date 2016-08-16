@@ -11,6 +11,7 @@
 		<div class="row">
 			<div id="pie-chart" class="col-md-4"></div>
 			<div id="gantt-chart" class="col-md-8"></div>
+			<div id="calendar-chart" class="col-md-12"></div>
 		</div>
 	</div>
 {% endblock %}
@@ -21,12 +22,14 @@
 	<script type="text/javascript">
 
 		// Load the Visualization API and the corechart package.
-		google.charts.load('current', {'packages':['corechart', 'gantt']});
+		google.charts.load('current', {'packages':['corechart', 'gantt', 'calendar']});
 
 		// Set a callback to run when the Google Visualization API is loaded.
 		google.charts.setOnLoadCallback(drawPieChart);
 		google.charts.setOnLoadCallback(drawGanttChart);
+		google.charts.setOnLoadCallback(drawCalendarChart);
 
+		// Pie Chart
 		function drawPieChart() {
 			// Create the data table.
 			var data = new google.visualization.DataTable();
@@ -46,7 +49,7 @@
 			chart.draw(data, options);
 		}
 
-		// draw Gantt chart
+		// Gantt chart
     function drawGanttChart() {
 			function daysToMilliseconds(days) {
 		    return days * 24 * 60 * 60 * 1000;
@@ -76,6 +79,35 @@
       };
       var chart = new google.visualization.Gantt(document.getElementById('gantt-chart'));
       chart.draw(data, options);
+    }
+
+		// Calendar chart
+		function drawCalendarChart() {
+        var dataTable = new google.visualization.DataTable();
+        dataTable.addColumn({ type: 'date', id: 'Date' });
+        dataTable.addColumn({ type: 'number', id: 'Won/Loss' });
+        dataTable.addRows([
+           [ new Date(2012, 3, 13), 37032 ],
+           [ new Date(2012, 3, 14), 38024 ],
+           [ new Date(2012, 3, 15), 38024 ],
+           [ new Date(2012, 3, 16), 38108 ],
+           [ new Date(2012, 3, 17), 38229 ],
+           // Many rows omitted for brevity.
+           [ new Date(2013, 9, 4), 38177 ],
+           [ new Date(2013, 9, 5), 38705 ],
+           [ new Date(2013, 9, 12), 38210 ],
+           [ new Date(2013, 9, 13), 38029 ],
+           [ new Date(2013, 9, 19), 38823 ],
+           [ new Date(2013, 9, 23), 38345 ],
+           [ new Date(2013, 9, 24), 38436 ],
+           [ new Date(2013, 9, 30), 38447 ]
+         ]);
+        var chart = new google.visualization.Calendar(document.getElementById('calendar-chart'));
+        var options = {
+          title: "Red Sox Attendance",
+          height: 350,
+        };
+        chart.draw(dataTable, options);
     }
 
 	</script>
